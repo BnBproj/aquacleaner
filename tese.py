@@ -90,29 +90,28 @@ def swim():                                                 #функция уп
     pi.i2c_write_byte(h, 4) 
     timer = time.time()
     
-#    while (timer + tim + 10 > time.time()):                  #ПД-регулятор удерживающий направление для вохвращения на базу
-#        yaw = round(auv.get_yaw())
-#        if napr > 0:
-#            e = abs(napr - yaw) - 180
-#            print("-180")
-#        if napr < 0:
-#            e = -abs(napr - yaw) + 180
-#            print("+180")
-#        u = (0.2 * e) + (0.3 * (e-eold))    
-#        print(u)    
-#        m1 = 50 - u
-#        m2 = 50 + u
-#        auv.set_motor_power(0, m1)
-#        auv.set_motor_power(1, m2)   
-#        eold = e
+    while (timer + tim + 10 > time.time()):                  #ПД-регулятор удерживающий направление для вохвращения на базу
+        yaw = round(auv.get_yaw())
+        if napr > 0:
+            e = abs(napr - yaw) - 180
+            print("-180")
+        if napr < 0:
+            e = -abs(napr - yaw) + 180
+            print("+180")
+        u = (0.2 * e) + (0.3 * (e-eold))    
+        print(u)    
+        m1 = 50 - u
+        m2 = 50 + u
+        auv.set_motor_power(0, m1)
+        auv.set_motor_power(1, m2)   
+        eold = e
         
     sys.exit(1)
 
 
 def comport():                                                #функция, запускающая в параллельные потоки запись видео и движение
-#    thread1 = threading.Thread(target=cam)
-#    thread2 = threading.Thread(target=swim)
-#    thread1.start()
-#    thread2.start()
-    swim()    
+    thread1 = threading.Thread(target=cam)
+    thread2 = threading.Thread(target=swim)
+    thread1.start()
+    thread2.start()    
 ui.run(reload = False)
